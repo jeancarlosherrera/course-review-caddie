@@ -1,4 +1,5 @@
 const Course = require("../models/course");
+const { cloudinary } = require("../cloudinary");
 
 module.exports.index = async (req, res) => {
     const allCourses = await Course.find({})
@@ -11,6 +12,7 @@ module.exports.renderAddForm = (req, res) => {
 
 module.exports.addCourse = async (req, res, next) => {
     const addCourse = new Course(req.body.course)
+    addCourse.images = req.files.map(el => ({ url: el.path, filename: el.filename }))
     addCourse.author = req.user._id
     await addCourse.save()
     req.flash("success", "Course Added Successfully!")
@@ -43,6 +45,15 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateCourse = async (req, res) => {
     const { id } = req.params
     const updatedCourse = await Course.findByIdAndUpdate(id, { ...req.body.course })
+    const imgs = req.files.map(el => ({ url: el.path, filename: el.filename }))
+    updatedCourse.images.push(...imgs)
+    await updatedCourse.save();
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(filename)
+        }
+        await updatedCourse.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+    }
     req.flash("success", "Course Updated Successfully!")
     res.redirect(`/courses/${updatedCourse.id}`)
 };

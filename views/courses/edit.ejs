@@ -3,7 +3,8 @@
     <div class="row">
         <h1 class="text-center">Edit Course</h1>
         <div class="col-6 offset-3">
-            <form action="/courses/<%=selectedCourse._id%>?_method=PUT" method="POST" class="validated-form" novalidate>
+            <form action="/courses/<%=selectedCourse._id%>?_method=PUT" method="POST" class="validated-form"
+                enctype="multipart/form-data" novalidate>
                 <div class="mb-3">
                     <label class="form-label" for="name">Name</label>
                     <input class="form-control" type="text" id="name" name="course[name]" required
@@ -27,10 +28,19 @@
                     <input class="form-control" type="text" id="location" name="course[location]" required
                         value="<%=selectedCourse.location%>">
                 </div>
+                <div class="mb-3 custom-file">
+                    <label for="images" class="form-label">Add More Image(s)</label>
+                    <input name="image" class="form-control" type="file" id="images" multiple>
+                </div>
                 <div class="mb-3">
-                    <label class=" form-label" for="image">Image URL</label>
-                    <input class="form-control" type="text" id="image" name="course[image]" required
-                        value="<%=selectedCourse.image%>">
+                    <% selectedCourse.images.forEach((img, index)=> { %>
+                        <img src="<%= img.thumbnail %>" class="img-thumbnail">
+                        <div class="form-check-inline">
+                            <input type="checkbox" name="deleteImages[]" value="<%= img.filename %>"
+                                id="image-<%= index %>">
+                        </div>
+                        <label for="image-<%= index %>">Delete</label>
+                        <% }) %>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-info">Update Course</button>
