@@ -1,15 +1,17 @@
 <% layout("layouts/boilerplate") %>
+
     <link rel="stylesheet" href="/stylesheets/stars.css">
+    <link rel="stylesheet" href="/stylesheets/styles.css">
 
     <div class="container">
         <div class="row">
             <div class="col-6">
-                <div id="map" style="width: 400px; height: 300px;"></div>
+                <div class="card mb-3">
                 <div id="coursesCarrousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <% selectedCourse.images.forEach((img, index)=> { %>
                             <div class="carousel-item <%= index === 0 ? " active" : "" %> ">
-                                <img src="  <%= img.url %>  " class="d-block w-100" alt="">
+                                <img src="  <%= img.url %>  " class="d-block w-100 card-img-top" alt="">
                             </div>
                             <% }) %>
                     </div>
@@ -26,7 +28,6 @@
                         </button>
                         <% } %>
                 </div>
-                <div class="card mb-3">
                     <div class="card-body">
                         <h5 class="card-title">
                             <%=selectedCourse.name%>
@@ -56,6 +57,7 @@
                 </div>
             </div>
             <div class="col-6">
+                <div class="mb-3" id="map"></div>
                 <% if (currentUser) { %>
                     <h2>Leave a Review</h2>
                     <form class="mb-3 validated-form" action="/courses/<%= selectedCourse._id %>/reviews" method="POST"
