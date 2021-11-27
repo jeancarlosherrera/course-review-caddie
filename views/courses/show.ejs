@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-6">
+                <div id="map" style="width: 400px; height: 300px;"></div>
                 <div id="coursesCarrousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <% selectedCourse.images.forEach((img, index)=> { %>
@@ -108,3 +109,9 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const mapToken = "<%- process.env.MAPBOX_TOKEN %>"
+        const courseToMap = <%-JSON.stringify(selectedCourse) %>
+    </script>
+    <script src="/javascripts/showPageMap.js"></script>
