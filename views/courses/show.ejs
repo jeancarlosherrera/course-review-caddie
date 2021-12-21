@@ -10,7 +10,8 @@
                     <div id="coursesCarrousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <% selectedCourse.images.forEach((img, index)=> { %>
-                                <div class="carousel-item <%= index === 0 ? " active" : "" %> ">
+                                <div class="carousel-item <%= index === 0 ? " active" : "" %> " style="max-height:
+                                    400px;">
                                     <img src="  <%= img.url %>  " class="d-block w-100 card-img-top" alt="">
                                 </div>
                                 <% }) %>
